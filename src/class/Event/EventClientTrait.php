@@ -13,6 +13,8 @@ namespace Nora\Core\Event;
 trait EventClientTrait
 {
     private $_event_manager;
+    private $_event_default_tag;
+    private $_event_subject;
 
     /**
      * イベントマネージャー
@@ -51,7 +53,7 @@ trait EventClientTrait
             $ev = Event::Create(
                 $this->filterEventTag($tag),
                 $params,
-                $this
+                $this->_event_subject
             );
             return $this->dispatch($ev);
         }
@@ -70,7 +72,19 @@ trait EventClientTrait
 
     private function _getDefaultTag( )
     {
-        return str_replace('\\', '.', get_class($this));
+        return ($this->_event_default_tag) ?
+            $this->_event_default_tag:
+            str_replace('\\', '.', get_class($this));
     }
 
+    private function _setDefaultTag($tag)
+    {
+        $this->_event_default_tag = str_replace('\\', '.', get_class($tag));
+    }
+
+    public function accept($subject)
+    {
+        $this->_event_subject = $subject;
+        $this->_setDefaultTag($subject);
+    }
 }
