@@ -21,6 +21,8 @@ class EventClientTraitTest extends \PHPUnit_Framework_TestCase
      * @covers ::on
      * @covers ::observe
      * @covers ::dispatch
+     * @covers ::_getDefaultTag
+     * @covers ::filterEventTag
      */
     public function testAll ()
     {
@@ -28,20 +30,30 @@ class EventClientTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($client->EventManager(), $client->EventManager());
 
         $this->cnt = 0;
+        $this->cnt2 = 0;
 
         $client->on('hoge', function( ) {
             $this->cnt++;
         });
 
         $client->observe(function($ev) {
-            if (!$ev->match('event.dispatched'))
+            if ($ev->match('hoge'))
             {
                 $this->cnt++;
             }
         });
-        $client->dispatch(Event::create('hoge'));
 
+        $client->observe(function($ev) use ($client){
+            if ($ev->match(get_class($client)))
+            {
+                $this->cnt2++;
+            }
+        });
+        $client->dispatch('hoge');
+        $client->dispatch('hogehoge', []);
         $this->assertEquals(2, $this->cnt);
+        $this->assertEquals(2, $this->cnt2);
+
     }
 
 

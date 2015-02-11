@@ -44,8 +44,33 @@ trait EventClientTrait
     /**
      * イベントをディスパッチする
      */
-    public function dispatch($tag, EventIF $event = null)
+    public function dispatch($tag, $params = [])
     {
-        return $this->EventManager( )->dispatch($tag, $event);
+        if (!($tag instanceof EventIF))
+        {
+            $ev = Event::Create(
+                $this->filterEventTag($tag),
+                $params,
+                $this
+            );
+            return $this->dispatch($ev);
+        }
+
+        $ev = $tag;
+        return $this->EventManager( )->dispatch($ev);
     }
+
+    protected function filterEventTag($tag)
+    {
+        return [
+            $tag,
+            $this->_getDefaultTag()
+        ];
+    }
+
+    private function _getDefaultTag( )
+    {
+        return str_replace('\\', '.', get_class($this));
+    }
+
 }

@@ -41,7 +41,7 @@ class Event implements EventIF
         if (!is_array($tag)) {
             $tag = [$tag];
         }
-        $e->_tags = $tag;
+        foreach($tag as $t) $e->addTag($t);
         $e->_params = $params;
         $e->setSubject($subject);
         return $e;
@@ -52,7 +52,7 @@ class Event implements EventIF
      */
     public function addTag($tag)
     {
-        return $this->_tags[] = $tag;
+        return $this->_tags[] = strtolower($tag);
     }
 
     /**
@@ -60,7 +60,8 @@ class Event implements EventIF
      */
     public function match($tag)
     {
-        return in_array($tag, $this->_tags);
+        return in_array(
+            strtolower($tag), $this->_tags);
     }
 
     /**
