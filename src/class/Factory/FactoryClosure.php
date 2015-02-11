@@ -53,12 +53,17 @@ class FactoryClosure extends Factory {
 
     protected function createImpl($spec)
     {
-        $spec = strtolower($spec);
-        return call_user_func($this->_handlers[$spec]);
+        return call_user_func($this->getHandler($spec));
     }
 
     protected function getListImpl( )
     {
         return array_keys($this->_handlers);
+    }
+
+    protected function getHandler($spec)
+    {
+        $spec = strtolower($spec);
+        return $this->_handlers[$spec];
     }
 }

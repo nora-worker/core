@@ -43,6 +43,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      * @covers Nora\Core\Factory\FactoryClosure::createImpl
      * @covers Nora\Core\Factory\FactoryClosure::__construct
      * @covers Nora\Core\Factory\FactoryClosure::register
+     * @covers Nora\Core\Factory\FactoryClosure::getHandler
      */
     public function testChaine($f)
     {
