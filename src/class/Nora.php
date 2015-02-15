@@ -9,7 +9,7 @@
  */
 
 use Nora\Core\Autoloader;
-use Nora\Component\Application\Application;
+use Nora\Core\Scope\Scope;
 
 /**
  * Noraのメインクラス
@@ -20,6 +20,7 @@ use Nora\Component\Application\Application;
 class Nora 
 {
     const LIB = __DIR__;
+    const MODULE_PATH = __DIR__.'/../modules';
 
     /**
      * オートローダ
@@ -27,9 +28,9 @@ class Nora
     static private $_autoloader;
 
     /**
-     * メインアプリケーション
+     * メインスコープ
      */
-    static private $_application;
+    static private $_scope;
 
 
     /**
@@ -53,26 +54,29 @@ class Nora
             self::$_autoloader = 
                 Autoloader::create(
                     [
-                        'Nora\Core' => self::LIB
+                        'Nora\Core' => self::LIB,
+                        'Nora\Module\Application' => self::MODULE_PATH.'/Application/class'
                     ]
                 );
     }
 
 
     /**
-     * アプリケーションの初期化
-     *
-     * @param string $dir
-     * @param array $options
+     * スコープの初期化
      */
-    static public function initialize ($dir, $options = [])
+    static public function initialize ( )
     {
-        self::$_application = Application::create($dir, $options);
+        self::$_scope = Scope::create(null, 'NoraScope');
+
+        self::setComponent('Autoloader', function ( ) {
+            return Nora::Autoloader();
+        });
+
+        self::addModulePath(realpath(__DIR__.'/../modules/'));
+        self::addModuleNS('Nora\Module');
     }
 
     /**
-     * アプリケーションに伝搬させる
-     *
      * @param string $name 呼びだされたメソッド名
      * @param string $args 呼びだされたメソッドの引数
      * @return mixed
@@ -80,7 +84,7 @@ class Nora
     static public function __callStatic ($name, $args)
     {
         return call_user_func_array(
-            [self::$_application, $name],
+            [self::$_scope, $name],
             $args
         );
     }

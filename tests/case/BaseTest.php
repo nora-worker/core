@@ -27,4 +27,24 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             Nora::Autoloader()
         );
     }
+
+    /**
+     * モジュールが使えてるか
+     *
+     * @covers ::initialize
+     */
+    public function testInitialize ( )
+    {
+        Nora::initialize();
+
+        // モジュールロード
+        Nora::loadModule('Application', [
+            'env' => 'dev',
+            'path' => TEST_PROJECT_PATH
+        ]);
+
+        var_dump(
+            Nora::Application()
+        );
+    }
 }

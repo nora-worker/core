@@ -16,9 +16,7 @@ use Nora\Core\Scope\Scope;
  */
 class ComponentTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @covers ::create
      * @covers ::__construct
      * @covers ::initComponent
      * @covers ::__call
@@ -26,8 +24,6 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
      */
     public function testComponent ()
     {
-        $comp = Component::create( );
-
         $scope = Scope::create(null, 'ComponentScope');
         $scope->observe(function($ev) {
             //var_dump($ev->toString());
@@ -37,7 +33,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
             }
 
         });
-        $comp = Component::create($scope);
+        $comp = new Component($scope);
         $this->assertEquals($scope, $comp->scope());
 
         $comp->setHelper('test', ['scope','component', function ($s, $c) {

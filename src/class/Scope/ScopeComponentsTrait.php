@@ -12,6 +12,7 @@ namespace Nora\Core\Scope;
 
 use Nora\Core\DI\Container as DIContainer;
 use Nora\Core\Event\Event;
+use Nora\Core\Util\Collection\Hash;
 
 /**
  * スコープのコンポーネントに関する機能
@@ -24,6 +25,7 @@ trait ScopeComponentsTrait
     protected function initScopeComponents( )
     {
         $this->_di_container = new DIContainer( );
+
 
         // コンポーネント取得イベントを定義する
         $this->on("scope.component.get", function ($ev) {
@@ -56,6 +58,14 @@ trait ScopeComponentsTrait
                 $this->getParent( )->dispatch($ev);
             }
         });
+
+        // レジストリを作成
+        $this->setComponent('registry', function ( ) {
+            return new Hash();
+        });
+        $this->setComponent('scope', function ( ) {
+            return $this;
+        });
     }
 
     /**
@@ -63,6 +73,12 @@ trait ScopeComponentsTrait
      */
     public function getComponent($name)
     {
+        if (strpos($name, '_'))
+        {
+            list($parent, $name) = explode('_', $name, 2);
+            return $this->getComponent($parent)->getComponent($name);
+        }
+
         // コンポーネントの取得要求を出す
         $event = $this->dispatch('scope.component.get', [
             'name' => $name,
@@ -82,6 +98,12 @@ trait ScopeComponentsTrait
      */
     public function hasComponent($name)
     {
+        if (strpos($name, '_'))
+        {
+            list($parent, $name) = explode('_', $name, 2);
+            return $this->getComponent($parent)->hasComponent($name);
+        }
+
         // コンポーネントの取得要求を出す
         return $event = $this->dispatch('scope.component.has', [
             'name' => $name,

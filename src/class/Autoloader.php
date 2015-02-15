@@ -51,7 +51,7 @@ class AutoLoader
      * @param string|array $path
      * @param string $ns optional Namespace
      */
-    private function addLibrary( $path, $ns = null )
+    public function addLibrary( $path, $ns = null )
     {
         if (is_array($path))
         {
