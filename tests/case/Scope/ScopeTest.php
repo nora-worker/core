@@ -163,9 +163,7 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
      */
     public function testHelperNotFound ($scope)
     {
-        var_Dump(
-            $scope->getHelper('hugahughogea')
-        );
+        $scope->getHelper('hugahughogea');
     }
 
     /**

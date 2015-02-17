@@ -26,12 +26,12 @@ class Component
         $this->initComponent();
     }
 
-
     protected function initComponent( )
     {
         $this->setComponent('scope', function ( ) {
             return $this->_scope;
         });
+
         $this->setComponent('component', function ( ) {
             return $this;
         });
@@ -62,6 +62,7 @@ class Component
     {
         $this->scope()->$name = $value;
     }
+
     public function &__get($name)
     {
         return $this->scope()->$name;

@@ -20,7 +20,7 @@ trait ScopeTreeTrait
      *
      * @var Scope
      */
-    private $_parent_scope;
+    private $_parent_scope = false;
 
     /**
      * 親スコープをセットする
@@ -50,7 +50,7 @@ trait ScopeTreeTrait
      */
     public function hasParent( )
     {
-        return $this->_parent_scope ? true: false;
+        return $this->_parent_scope !== false ? true: false;
     }
 
     /**

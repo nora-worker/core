@@ -10,6 +10,8 @@
 
 use Nora\Core\Autoloader;
 use Nora\Core\Scope\Scope;
+use Nora\Core\App\App;
+use Nora\Core\Module\ModuleLoader;
 
 /**
  * Noraのメインクラス
@@ -28,9 +30,9 @@ class Nora
     static private $_autoloader;
 
     /**
-     * メインスコープ
+     * アプリ
      */
-    static private $_scope;
+    static private $_app;
 
 
     /**
@@ -62,19 +64,62 @@ class Nora
 
 
     /**
-     * スコープの初期化
+     * プロジェクトの初期化
      */
-    static public function initialize ( )
+    static public function initialize ($path, $env)
     {
-        self::$_scope = Scope::create(null, 'NoraScope');
+        $scope =  Scope::create(null, 'NoraScope')
+            ->setComponent('Autoloader', function ( ) {
+                return Nora::Autoloader();
+            })
+            # App設定前に実行される
+            ->on('app.pre_configure', function ($e) {
 
-        self::setComponent('Autoloader', function ( ) {
-            return Nora::Autoloader();
-        });
+                # モジュールロードパスを追加
+                $e
+                    ->app
+                    ->ModuleLoader( )
+                    ->addModulePath(realpath(__DIR__.'/../modules'));
 
-        self::addModulePath(realpath(__DIR__.'/../modules/'));
-        self::addModuleNS('Nora\Module');
+                # コンフィグロードパスを追加
+                $e
+                    ->app
+                    ->Config( )
+                    ->addConfigDir(realpath(__DIR__.'/../..').'/config');
+            })
+            # App設定後に実行される
+            ->on('app.post_configure', function ($e) {
+
+                // TODO まとめる
+
+                $app = $e->app;
+
+                # PHPの設定
+                mb_language($app->config( )->get('php.mb_language', 'ja'));
+
+                mb_internal_encoding(
+                    $app->config( )->get('php.mb_internal_encoding', 'utf8')
+                );
+
+                # チェック
+                $app->check();
+
+                # 開発ツールのロード
+                self::ModuleLoader( )->load('devel')->enable(
+                    !$app->isDevel()
+                );
+
+                // のらの初期化イベントを発行する
+                self::fire('nora.init', [
+                    'nora' => $app
+                ]);
+            });
+
+        self::$_app = new App($scope);
+        self::configure($path, $env);
+        return self::$_app;
     }
+
 
     /**
      * @param string $name 呼びだされたメソッド名
@@ -83,8 +128,11 @@ class Nora
      */
     static public function __callStatic ($name, $args)
     {
+        if (!self::$_app) {
+            throw new \Exception('Nora: Not Initialized');
+        }
         return call_user_func_array(
-            [self::$_scope, $name],
+            [self::$_app, $name],
             $args
         );
     }

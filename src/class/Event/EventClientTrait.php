@@ -46,7 +46,7 @@ trait EventClientTrait
     /**
      * イベントをディスパッチする
      */
-    public function dispatch($tag, $params = [])
+    public function fire($tag, $params = [])
     {
         if (!($tag instanceof EventIF))
         {
@@ -60,6 +60,11 @@ trait EventClientTrait
 
         $ev = $tag;
         return $this->EventManager( )->dispatch($ev);
+    }
+
+    public function dispatch($tag, $params = [])
+    {
+        return $this->fire($tag, $params);
     }
 
     protected function filterEventTag($tag)

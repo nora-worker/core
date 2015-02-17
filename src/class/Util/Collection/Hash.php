@@ -107,4 +107,27 @@ class Hash
         }
         return $default;
     }
+
+    /**
+     * マージする
+     *
+     */
+    public function merge($array)
+    {
+        foreach($array as $k=>$v)
+        {
+            $this->set($k, $v);
+        }
+        return $this;
+    }
+
+    public function &__get($name)
+    {
+        return $this->get($name);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->set($name, $value);
+    }
 }

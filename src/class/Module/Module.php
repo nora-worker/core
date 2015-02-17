@@ -11,35 +11,63 @@
 namespace Nora\Core\Module;
 
 use Nora\Core\Component\Component;
+use Nora\Core\Util\Collection\Hash;
 
 /**
  * モジュールクラス
  */
 class Module extends Component implements ModuleIF
 {
-    static public function create(Scope $scope = null)
+    /**
+     * Facade取得
+     */
+    static public function facade ( )
     {
         $class = get_called_class();
+        return ['scope', function($scope) use ($class){
+            return new $class($scope->newScope());
+        }];
+    }
 
-        $module = new $class();
-        $module->_scope = $scope;
-
-        // スコープに所有オブジェクトの変更を伝える
-        $scope->accept($module);
-
-        // イニシャライズ前イベントをディスパッチ
-        $module->dispatch('module.pre_init');
-
-        $module->initModule( );
-
-        // イニシャライズ後イベントをディスパッチ
-        $module->dispatch('component.post_init');
-        return $module;
+    protected function initComponent( )
+    {
+        parent::initComponent( );
+        $this->initModule();
     }
 
     protected function initModule( )
     {
-        parent::initComponent( );
+        foreach(get_class_methods($this) as $m)
+        {
+            if (0 === strpos($m,'boot'))
+            {
+                $this->setComponent(
+                    substr($m,4),
+                    function ( ) use ($m) {
+                        return $this->{$m}( );
+                    }
+                );
+            }
+        }
     }
 
+    public function configure($array)
+    {
+        // コンフィグをマージする
+        $this->config( )->merge($array);
+
+        $this->afterConfigure();
+    }
+
+    protected function afterConfigure( )
+    {
+    }
+
+    /** 
+     * コンフィグオブジェクトを作成する
+     */
+    protected function bootConfig($settings = [])
+    {
+        return  new Config($settings);
+    }
 }

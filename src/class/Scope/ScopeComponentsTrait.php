@@ -129,6 +129,5 @@ trait ScopeComponentsTrait
 
         return $this;
     }
-
 }
 

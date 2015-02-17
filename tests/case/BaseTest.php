@@ -29,22 +29,12 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * モジュールが使えてるか
+     * Initialize
      *
      * @covers ::initialize
      */
     public function testInitialize ( )
     {
-        Nora::initialize();
-
-        // モジュールロード
-        Nora::loadModule('Application', [
-            'env' => 'dev',
-            'path' => TEST_PROJECT_PATH
-        ]);
-
-        var_dump(
-            Nora::Application()
-        );
+        Nora::initialize(TEST_PROJECT_PATH, 'devel');
     }
 }

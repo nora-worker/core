@@ -7,16 +7,18 @@
  * @licence https://www.nora-worker.net/LICENCE
  * @version 1.0.0
  */
-namespace Nora\Module\FileSystem;
+namespace Nora\Test\Module\Hoge;
+
+use Nora;
 
 /**
  * module loader
  */
-return ['AutoLoader', 'scope', 'settings', function ($al, $scope, $settings) {
+return ['scope', function ($scope) {
 
     // オートロードの設定
-    $al->addLibrary(__dir__.'/class', __namespace__ );
+    Nora::AutoLoader()->addLibrary(__dir__.'/class', __namespace__ );
 
-    return new Facade($scope->newScope());
+    return new Hoge($scope->newScope());
 }];
 

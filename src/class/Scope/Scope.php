@@ -113,6 +113,30 @@ class Scope implements ScopeIF
     }
 
     /**
+     * クロージャで実行する (引数を配列で渡す)
+     *
+     * @param array|closure
+     * @param args
+     */
+    public function invokeArray($spec, $args = [])
+    {
+        return call_user_func_array(
+            $this->makeClosure($spec), $args);
+    }
+
+    /**
+     * クロージャで実行する (引数を可変で渡す)
+     *
+     * @param array|closure
+     */
+    public function invoke($spec)
+    {
+        $args = func_get_args( );
+        array_shift($args);
+        return $this->invokeArray($spec, $args);
+    }
+
+    /**
      * クロージャを作成する
      *
      * @param array|closure
@@ -157,84 +181,4 @@ class Scope implements ScopeIF
     {
         return $this->registry()->has($name);
     }
-
-    public function addModulePath($path)
-    {
-        $reg = $this->rootScope()->registry();
-
-        if(!$this->rootScope()->registry()->has('module_path'))
-        {
-            $this->rootScope()->registry()->set('module_path', []);
-        }
-        $paths = $this->rootScope()->registry()->get('module_path');
-        array_unshift($paths, $path);
-        $this->rootScope()->registry()->set('module_path', $paths);
-    }
-
-    public function addModuleNS($ns)
-    {
-        $reg = $this->rootScope()->registry();
-
-        if(!$reg->has('module_ns'))
-        {
-            $reg->set('module_ns', []);
-        }
-        $ns_list = $reg->get('module_ns');
-        array_unshift($ns_list, $ns);
-        $this->rootScope()->registry()->set('module_ns', $ns_list);
-    }
-
-
-    public function loadModule($name, $settings = [])
-    {
-        if ($this->hasParent())
-        {
-            return $this->rootScope()->loadModule($name, $settings);
-        }
-
-        if (!$this->hasComponent($name))
-        {
-            $settings = Hash::create(Hash::NO_CASE_SENSITIVE,$settings);
-
-            foreach ($this->registry()->get('module_ns', []) as $ns)
-            {
-                if (class_exists($class = $ns.'\\'.$name.'\\Facade'))
-                {
-                    $class::register($this, $settings);
-                }
-                return true;
-            }
-
-            // モジュールを読み込む
-            foreach ($this->registry()->get('module_path', []) as $path)
-            {
-                $loader = $path.'/'.$name.'/loader.php';
-
-                if (file_exists($loader))
-                {
-                    $spec = include $loader;
-                    $this->setComponent($name, $this->makeClosure($spec, [
-                        'settings' => Hash::create(Hash::NO_CASE_SENSITIVE,$settings)
-                    ]));
-                    return true;
-                }
-            }
-        }
-    }
-
-    public function checkModule($name)
-    {
-        if ($this->hasParent()) return call_user_func_array([$this->rootScope(),__method__], func_get_args());
-
-        $args = func_get_args();
-        foreach ($args as $name)
-        {
-            $this->loadModule($name);
-            if (!$this->hasComponent($name))
-            {
-                throw new Exception\ModuleDependency($name);
-            }
-        }
-    }
-
 }
