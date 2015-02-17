@@ -7,9 +7,7 @@
  * @licence https://www.nora-worker.net/LICENCE
  * @version 1.0.0
  */
-
-require_once realpath(__DIR__.'/../').'/class/Nora.php';
-
+require_once realpath(__dir__.'/../').'/class/Nora.php';
 
 // オートローダを登録する
 Nora::Autoloader( )->register();
