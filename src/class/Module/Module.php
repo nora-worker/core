@@ -35,21 +35,10 @@ class Module extends Component implements ModuleIF
         $this->initModule();
     }
 
-    protected function initModule( )
+    protected function initModule ( )
     {
-        foreach(get_class_methods($this) as $m)
-        {
-            if (0 === strpos($m,'boot'))
-            {
-                $this->setComponent(
-                    substr($m,4),
-                    function ( ) use ($m) {
-                        return $this->{$m}( );
-                    }
-                );
-            }
-        }
     }
+
 
     public function configure($array)
     {

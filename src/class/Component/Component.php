@@ -35,6 +35,20 @@ class Component
         $this->setComponent('component', function ( ) {
             return $this;
         });
+
+        // メソッドベースのコンポーネントを取り込む
+        foreach(get_class_methods($this) as $m)
+        {
+            if (0 === strpos($m,'boot'))
+            {
+                $this->setComponent(
+                    substr($m,4),
+                    function ( ) use ($m) {
+                        return $this->{$m}( );
+                    }
+                );
+            }
+        }
     }
 
     public function scope ( )

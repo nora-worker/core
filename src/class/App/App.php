@@ -29,18 +29,6 @@ class App extends Component
 
     public function initApp ( )
     {
-        foreach(get_class_methods($this) as $m)
-        {
-            if (0 === strpos($m,'boot'))
-            {
-                $this->setComponent(
-                    substr($m,4),
-                    function ( ) use ($m) {
-                        return $this->{$m}( );
-                    }
-                );
-            }
-        }
     }
 
     protected function bootModuleLoader( )
