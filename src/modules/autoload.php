@@ -14,5 +14,9 @@ return ['Autoloader', function ($al) {
         __DIR__.'/Devel/class',
         'Nora\Module\Devel'
     );
+    $al->addLibrary(
+        __DIR__.'/Logging/class',
+        'Nora\Module\Logging'
+    );
 }];
 

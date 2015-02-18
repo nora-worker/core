@@ -130,4 +130,14 @@ class Hash
     {
         $this->set($name, $value);
     }
+    public function toArray( )
+    {
+        $ret = [];
+
+        foreach(array_keys($this->_array) as $k)
+        {
+            $ret[$k] = $this->get($k);
+        }
+        return $ret;
+    }
 }
