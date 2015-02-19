@@ -16,7 +16,7 @@ use Nora\Core\Module\Module;
  */
 class Facade extends Module
 {
-    protected function initModuleImple( )
+    protected function initModuleImpl( )
     {
         $this->rootScope( )->setComponent('Environment', function ( ) {
             return new Environment($this->scope());

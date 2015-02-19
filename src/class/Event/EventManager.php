@@ -21,7 +21,7 @@ class EventManager {
     private $_subject;
     private $_default_observer;
 
-    public function create ($subject = null) {
+    static public function create ($subject = null) {
 
         $em = new EventManager();
         $em->_subject = $subject;

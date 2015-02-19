@@ -16,7 +16,7 @@ use Nora\Core\Util\Collection\Hash;
 /**
  * モジュールクラス
  */
-class Module extends Component implements ModuleIF
+abstract class Module extends Component implements ModuleIF
 {
     /**
      * Facade取得
@@ -37,12 +37,10 @@ class Module extends Component implements ModuleIF
 
     protected function initModule ( )
     {
-        $this->initModuleImple( );
+        $this->initModuleImpl( );
     }
 
-    protected function initModuleImple( )
-    {
-    }
+    abstract protected function initModuleImpl( );
 
 
     public function configure($array)

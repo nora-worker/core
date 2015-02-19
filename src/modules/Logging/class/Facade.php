@@ -20,6 +20,13 @@ class Facade extends Module
 
     private $_logger_list;
 
+    public function initModuleImpl( )
+    {
+        $this->rootScope( )->setHelper('getLogger', function ($name = null) {
+            return $this->getLogger($name);
+        });
+    }
+
     /**
      * ロガーを作成する
      */
@@ -94,7 +101,7 @@ class Facade extends Module
                 elseif ($e->match('php.exception')) {
                     $this->getLogger()->post (
                         Log::create(
-                            (string) $e,
+                            (string) $e->exception,
                             [
                                 'class' => get_class($e->exception),
                             ],
@@ -104,5 +111,6 @@ class Facade extends Module
                     );
                 }
             });
+        return $this;
     }
 }

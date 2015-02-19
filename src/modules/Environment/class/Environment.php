@@ -17,6 +17,7 @@ use Nora\Core\Util\Collection\Hash;
  */
 class Environment extends Component
 {
+    private $_SERVER;
 
     public function initComponentImple ( )
     {

@@ -110,6 +110,16 @@ class ModuleLoader extends Component {
 
     public function load($name)
     {
-        return $this->loadModule($name);
+        if (func_num_args() === 1)
+        {
+            return $this->loadModule($name);
+        }
+
+        $ret = [];
+        foreach(func_get_args() as $name)
+        {
+            $ret[$name] = $this->load($name);
+        }
+        return $ret;
     }
 }

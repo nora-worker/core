@@ -17,7 +17,7 @@ use Closure;
  */
 abstract class EventObserver implements EventObserverIF
 {
-    public function create ($spec = null)
+    static public function create ($spec = null)
     {
         if ($spec instanceof EventObserver)
         {

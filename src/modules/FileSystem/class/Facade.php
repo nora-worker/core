@@ -27,4 +27,8 @@ class Facade extends Module
     {
         return new FileSystem($path);
     }
+
+    protected function initModuleImpl( )
+    {
+    }
 }

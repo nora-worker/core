@@ -19,9 +19,8 @@ use Nora\Core\Module\Module;
  */
 class Facade extends Module
 {
-    protected function initModule( )
+    protected function initModuleImpl( )
     {
-        parent::initModule( );
 
     }
 
