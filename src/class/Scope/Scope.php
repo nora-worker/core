@@ -106,7 +106,7 @@ class Scope implements ScopeIF
 
         if ($this->hasComponent($name))
         {
-            return $this->getComponent($name, $args[0]);
+            return $this->getComponent($name, isset($args[0]) ? $args[0]: null);
         }
 
         throw new Exception\InvalidMethodCalled($name, $this);

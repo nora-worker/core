@@ -26,7 +26,7 @@ class Config extends Hash
         }
     }
 
-    public function set ($k, $v)
+    public function set ($k, $v = NULL)
     {
         if (!$this->has($k))
         {
