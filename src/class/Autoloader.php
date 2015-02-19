@@ -70,6 +70,8 @@ class AutoLoader
 
         $path = rtrim($path, '/');
         $this->_library[] = !is_string($ns) ? $path: ['ns' => trim($ns,'\\'), 'path' => rtrim($path,'//')];
+
+        return $this;
     }
 
     /**

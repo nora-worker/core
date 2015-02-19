@@ -37,6 +37,11 @@ class Module extends Component implements ModuleIF
 
     protected function initModule ( )
     {
+        $this->initModuleImple( );
+    }
+
+    protected function initModuleImple( )
+    {
     }
 
 
