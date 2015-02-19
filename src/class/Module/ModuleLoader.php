@@ -80,7 +80,7 @@ class ModuleLoader extends Component {
         }
 
         // FactoryNotFound
-        throw new Exception/ModuleNotFound($name, $this);
+        throw new Exception\ModuleNotFound($name, $this);
     }
 
     /**
