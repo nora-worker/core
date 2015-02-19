@@ -54,23 +54,6 @@ class Logger
 
     /**
      * ログ出力
-     *
-     * @param string $msg
-     * @param array $args
-     * @param string $tag
-     */
-    public function info ($msg= '', $args = [], $tag = null)
-    {
-        $this->post(Log::create(
-            $msg,
-            $args,
-            LogLevel::INFO,
-            $tag
-        ));
-    }
-
-    /**
-     * ログ出力
      */
     public function __call($name, $args)
     {

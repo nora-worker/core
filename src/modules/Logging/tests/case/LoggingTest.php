@@ -88,7 +88,5 @@ class LoggingTest extends \PHPUnit_Framework_TestCase
             ],
             ['phpunit', 'nora']
         );
-
-
     }
 }
