@@ -37,12 +37,7 @@ abstract class Base
         if ($this->_formatter)
             return $this->_formatter;
 
-        $foramt = $this->spec()->get(
-            'format', 
-            '%(date) %(msg)'
-        );
-        $format = $this->spec()->get('format', '%(date) %(msg)');
-
+        $format = $this->spec()->get('format', '%(time) %(tag) %(level) %(msg) %(args)');
 
         $this->_formatter = Formatter::build([
             'type' => 'string',

@@ -65,14 +65,14 @@ class String
      */
     private function compileFormat($format)
     {
-        return preg_replace_callback('/%\((.+)\)/U', function ($m) {
+        return preg_replace_callback('/%\((.+)\)/U', function ($m) use ($format){
             $num = array_search($m[1], $this->_format_order);
 
             if ($num === false)
             {
                 throw new \RuntimeException(
                     $m[1]." is invalid for LogFormat Enable Pramas are ".
-                    var_export($this->_format_order, true)
+                    var_export($this->_format_order, true). " Given ".$format
                 );
             }
 
