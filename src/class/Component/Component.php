@@ -49,6 +49,12 @@ class Component
                 );
             }
         }
+
+        $this->initComponentImple( );
+    }
+
+    protected function initComponentImple( )
+    {
     }
 
     public function scope ( )

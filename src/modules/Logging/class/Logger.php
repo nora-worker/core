@@ -42,6 +42,37 @@ class Logger
     }
 
     /**
+     * ロガーをイベントクライアントに設定する
+     */
+    public function apply ($client)
+    {
+        // ロガーを適用
+        $client->observe(function($e) {
+            if (
+                $e->match(function($tag) {
+                    return 0 === strpos($tag, 'log');
+                }, $hit)
+            ){
+                $level=LogLevel::toInt(substr($hit, 4));
+
+                $params = $e->getParams();
+                unset($params['msg']);
+
+                $this->post(
+                    Log::create(
+                        $e->msg,
+                        $params,
+                        $level,
+                        $e->getTags()
+                    )
+                );
+            }
+        });
+
+        return $this;
+    }
+
+    /**
      * ログを送信する
      */
     public function post(Log $log)

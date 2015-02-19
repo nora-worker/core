@@ -60,13 +60,33 @@ class Event implements EventIF
         return $this->_tags[] = strtolower($tag);
     }
 
+    public function getTags( )
+    {
+        return $this->_tags;
+    }
+
     /**
      * タグとマッチするか
      */
-    public function match($tag)
+    public function match($tag, &$hit = null)
     {
-        return in_array(
-            strtolower($tag), $this->_tags);
+        if (is_string($tag)) {
+            return in_array(
+                strtolower($tag), $this->_tags);
+        }
+
+        if ($tag instanceof \Closure)
+        {
+            foreach($this->_tags as $v)
+            {
+                if(call_user_func($tag, $v))
+                {
+                    $hit = $v;
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /**
@@ -100,6 +120,15 @@ class Event implements EventIF
     {
         return array_keys($this->_params);
     }
+
+    /**
+     * パラムを取得
+     */
+    public function getParams( )
+    {
+        return $this->_params;
+    }
+
 
     /**
      * パラメタ操作

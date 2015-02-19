@@ -51,6 +51,8 @@ class Module extends Component implements ModuleIF
         $this->config( )->merge($array);
 
         $this->afterConfigure();
+
+        return $this;
     }
 
     protected function afterConfigure( )
