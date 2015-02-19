@@ -25,6 +25,11 @@ class Environment extends Component
         );
     }
 
+    public function bootPHP( )
+    {
+        return new PHPFunctionWrapper( );
+    }
+
     public function register ( )
     {
         // ハンドラ系
