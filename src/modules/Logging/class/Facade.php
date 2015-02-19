@@ -69,4 +69,40 @@ class Facade extends Module
             'loggers' => []
         ]);
     }
+
+    public function register( )
+    {
+        $this
+            ->ModuleLoader()
+            ->load('environment')
+            ->register()
+            ->observe(function ($e) {
+
+                if ($e->match('php.error')) {
+                    $this->getLogger()->post (
+                        Log::create(
+                            $e->errstr,
+                            [
+                                'file' => $e->errfile,
+                                'line' => $e->errline,
+                            ],
+                            LogLevel::phpToNora($e->errno),
+                            'php.error'
+                        )
+                    );
+                }
+                elseif ($e->match('php.exception')) {
+                    $this->getLogger()->post (
+                        Log::create(
+                            (string) $e,
+                            [
+                                'class' => get_class($e->exception),
+                            ],
+                            LogLevel::CRIT,
+                            'php.exception'
+                        )
+                    );
+                }
+            });
+    }
 }

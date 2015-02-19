@@ -88,5 +88,10 @@ class LoggingTest extends \PHPUnit_Framework_TestCase
             ],
             ['phpunit', 'nora']
         );
+
+
+        $module->register();
+        trigger_error('hoge');
+        trigger_error('hoge', E_USER_ERROR);
     }
 }
