@@ -50,10 +50,10 @@ class Component
             }
         }
 
-        $this->initComponentImple( );
+        $this->initComponentImpl( );
     }
 
-    protected function initComponentImple( )
+    protected function initComponentImpl( )
     {
     }
 
