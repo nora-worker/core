@@ -18,17 +18,27 @@ use Nora\Core\Util\Collection\Hash;
 class Environment extends Component
 {
     private $_SERVER;
+    private $_ENV;
 
     public function initComponentImpl ( )
     {
         $this->_SERVER = Hash::create(
             Hash::NO_CASE_SENSITIVE, $_SERVER
         );
+        $this->_ENV = Hash::create(
+            Hash::NO_CASE_SENSITIVE, $_ENV
+        );
     }
 
     public function bootPHP( )
     {
         return new PHPFunctionWrapper( );
+    }
+
+    public function bootDetector( )
+    {
+        $detector = new Detector($this);
+        return $detector;
     }
 
     public function register ( )
@@ -86,5 +96,27 @@ class Environment extends Component
     public function _SERVER( )
     {
         return $this->_SERVER;
+    }
+
+    /**
+     * サーバ変数を取得
+     */
+    public function _ENV( )
+    {
+        return $this->_ENV;
+    }
+
+    public function get($name, $value = null)
+    {
+        if ($this->_SERVER()->has($name))
+        {
+            return $this->_SERVER()->get($name);
+        }
+        elseif ($this->_ENV()->has($name))
+        {
+            return $this->_ENV()->get($name);
+        }
+
+        return $value;
     }
 }
