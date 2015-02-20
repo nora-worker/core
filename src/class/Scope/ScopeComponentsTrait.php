@@ -125,7 +125,9 @@ trait ScopeComponentsTrait
             return $this;
         }
 
-        $this->_di_container->register($name, $this->makeClosure($spec));
+        $this->_di_container->register($name, 
+            (is_array($spec) ?  $this->makeClosure($spec): $spec)
+        );
 
         return $this;
     }

@@ -26,7 +26,7 @@ class Container extends FactoryClosure implements ContainerIF
     /**
      * インスタンス保持用
      */
-    private $_instances;
+    private $_instance_store;
 
     /**
      * コンストラクタ
@@ -62,6 +62,16 @@ class Container extends FactoryClosure implements ContainerIF
         $this->dispatch('log.notice', [
             'message' =>  "$name is registered"
         ]);
+
+        // キャッシュをクリアする
+        $this->_instance_store->clear($name);
+
+        // Specが生オブジェクトであればキャッシュを登録する
+        if (is_object($spec) && !($spec instanceof \Closure))
+        {
+            $this->_instance_store->set($name, $spec);
+            return $this;
+        }
 
         parent::register($name, $spec);
         return $this;

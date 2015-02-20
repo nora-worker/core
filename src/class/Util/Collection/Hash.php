@@ -108,6 +108,11 @@ class Hash
         return $default;
     }
 
+    public function clear($name)
+    {
+        unset( $this->_array[$this->_filterName($name)]);
+    }
+
     /**
      * マージする
      *
