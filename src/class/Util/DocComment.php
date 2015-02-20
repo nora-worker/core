@@ -40,6 +40,8 @@ class DocComment
 
             if ($line === '/**' || $line === '/') continue;
 
+            if (empty($line)) continue;
+
             if ($line{0} !== '@')
             {
                 $comment[] = $line;

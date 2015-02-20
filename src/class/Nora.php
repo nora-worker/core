@@ -66,7 +66,7 @@ class Nora
     /**
      * プロジェクトの初期化
      */
-    static public function initialize ($path, $env)
+    static public function initialize ($path, $env, $cb = null)
     {
         $scope =  Scope::create(null, 'NoraScope')
             ->setComponent('Autoloader', function ( ) {
@@ -88,7 +88,7 @@ class Nora
                     ->addConfigDir(realpath(__DIR__.'/../..').'/config');
             })
             # App設定後に実行される
-            ->on('app.post_configure', function ($e) {
+            ->on('app.post_configure', function ($e) use ($cb) {
 
                 // TODO まとめる
 
@@ -113,6 +113,8 @@ class Nora
                 self::fire('nora.init', [
                     'nora' => $app
                 ]);
+
+                if ($cb !== null) self::invoke($cb);
             });
 
         self::$_app = new App($scope);
