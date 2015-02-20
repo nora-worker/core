@@ -85,7 +85,8 @@ class Component
 
     public function &__get($name)
     {
-        return $this->scope()->$name;
+        $data = $this->scope()->$name;
+        return $data;
     }
 
     /**

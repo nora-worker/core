@@ -30,7 +30,7 @@ class Config extends Hash
     {
         if (!$this->has($k))
         {
-            throw new UndefinedParam($k);
+            throw new Exception\UndefinedParam($k);
         }
         parent::set($k, $v);
     }
@@ -39,7 +39,7 @@ class Config extends Hash
     {
         if (!$this->has($k))
         {
-            throw new UndefinedParam($k);
+            throw new Exception\UndefinedParam($k);
         }
         return parent::get($k);
     }

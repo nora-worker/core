@@ -44,7 +44,7 @@ class File extends Base
     {
         $file = $this->spec()->get('file');
 
-        $file = preg_replace_callback('/%\((.+)\)/U', function ($m) use ($format){
+        $file = preg_replace_callback('/%\((.+)\)/U', function ($m) {
             $num = array_search($m[1], $this->_format_order);
 
             if ($num === false)
