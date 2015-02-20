@@ -87,4 +87,43 @@ class Component
     {
         return $this->scope()->$name;
     }
+
+    /**
+     * デバッグログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function debug($msg, $options = [])
+    {
+        if (!is_string($msg))
+        {
+            $msg = var_export($msg, true);
+        }
+        $options['msg'] = $msg;
+        $this->rootScope()->fire('log.debug',$options);
+    }
+
+    /**
+     * アラートログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function alert($msg, $options = [])
+    {
+        $options['msg'] = $msg;
+
+        $this->rootScope()->fire('log.alert',$options);
+    }
+
+    /**
+     * 通知ログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function notice($msg, $options = [])
+    {
+        $options['msg'] = $msg;
+
+        $this->rootScope()->fire('log.notice',$options);
+    }
 }
