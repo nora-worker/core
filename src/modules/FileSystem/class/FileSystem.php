@@ -43,7 +43,13 @@ class FileSystem extends DirectoryNode
     {
         if ($path{0} === '@')
         {
-            list($alias,$path) = explode("/", $path, 2);
+            if (false !== strpos($path,'/'))
+            {
+                list($alias,$path) = explode("/", $path, 2);
+            }else{
+                $alias = $path;
+                $path = "";
+            }
 
             return $this->getPath(
                 $this->_alias_list[$alias].(is_null($path) ? '': "/$path")
