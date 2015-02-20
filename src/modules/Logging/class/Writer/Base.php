@@ -25,6 +25,17 @@ abstract class Base
     public function __construct(Hash $spec)
     {
         $this->_spec = $spec;
+
+        $this->initWriter( );
+    }
+
+    protected function initWriter( )
+    {
+        $this->initWriterImpl();
+    }
+
+    protected function initWriterImpl( )
+    {
     }
 
     protected function spec( )

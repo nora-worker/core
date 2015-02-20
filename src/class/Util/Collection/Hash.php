@@ -12,7 +12,7 @@ namespace Nora\Core\Util\Collection;
 /**
  * ハッシュクラス
  */
-class Hash
+class Hash implements \ArrayAccess
 {
     private $_array;
     private $_flg = 0;
@@ -135,6 +135,7 @@ class Hash
     {
         $this->set($name, $value);
     }
+
     public function toArray( )
     {
         $ret = [];
@@ -144,5 +145,25 @@ class Hash
             $ret[$k] = $this->get($k);
         }
         return $ret;
+    }
+
+    public function offsetExists($name)
+    {
+        return $this->has($name);
+    }
+
+    public function &offsetGet($name)
+    {
+        return $this->get($name);
+    }
+
+    public function offsetSet($name, $value)
+    {
+        return $this->set($name, $value);
+    }
+
+    public function offsetUnset($name)
+    {
+        return $this->clear($name);
     }
 }
