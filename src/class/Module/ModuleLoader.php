@@ -24,6 +24,15 @@ class ModuleLoader extends Component {
     private $_module_ns_list = [];
     private $_load_log = [];
 
+    protected function initcomponentImpl( )
+    {
+        $this->rootScope( )->setHelper('module', function ( ) {
+            return call_user_func_array(
+                [$this, 'load'], func_get_args()
+            );
+        });
+    }
+
     /**
      * モジュール名のノーマライズ
      */
