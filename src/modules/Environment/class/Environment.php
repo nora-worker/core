@@ -19,7 +19,7 @@ class Environment extends Component
 {
     private $_SERVER;
 
-    public function initComponentImple ( )
+    public function initComponentImpl ( )
     {
         $this->_SERVER = Hash::create(
             Hash::NO_CASE_SENSITIVE, $_SERVER
