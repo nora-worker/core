@@ -9,7 +9,7 @@
  */
 namespace Nora\Module\Environment;
 
-use Nora\Collection\Util\Hash;
+use Nora\Core\Util\Collection\Hash;
 
 /**
  * 検知クラス
@@ -17,11 +17,12 @@ use Nora\Collection\Util\Hash;
 class Detector implements DetectorIF
 {
     private $_detectors;
-    private $_env;
+
+    protected $env;
 
     public function __construct ($env)
     {
-        $this->_env = $env;
+        $this->env = $env;
         $this->_detectors = new Hash(Hash::NO_CASE_SENSITIVE);
     }
 

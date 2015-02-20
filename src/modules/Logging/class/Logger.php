@@ -56,7 +56,11 @@ class Logger
                 $level=LogLevel::toInt(substr($hit, 4));
 
                 $params = $e->getParams();
-                unset($params['msg']);
+
+                if (isset($params['msg']))
+                {
+                    unset($params['msg']);
+                }
 
                 $this->post(
                     Log::create(

@@ -19,14 +19,26 @@ class Environment extends Component
 {
     private $_SERVER;
     private $_ENV;
+    private $_POST;
+    private $_GET;
+    private $_input = false;
 
     public function initComponentImpl ( )
     {
         $this->_SERVER = Hash::create(
             Hash::NO_CASE_SENSITIVE, $_SERVER
         );
+
         $this->_ENV = Hash::create(
             Hash::NO_CASE_SENSITIVE, $_ENV
+        );
+
+        $this->_POST = Hash::create(
+            Hash::NO_CASE_SENSITIVE, $_POST
+        );
+
+        $this->_GET = Hash::create(
+            Hash::NO_CASE_SENSITIVE, $_GET
         );
     }
 
@@ -39,6 +51,11 @@ class Environment extends Component
     {
         $detector = new Detector($this);
         return $detector;
+    }
+
+    public function is ($name)
+    {
+        return $this->Detector()->is($name);
     }
 
     public function register ( )
@@ -78,13 +95,13 @@ class Environment extends Component
     public function phpShutdownHandler( )
     {
         $error = error_get_last();
-        if ($error['type'] == 1) {
+        if ($error['type'] > 0) {
             $this->phpErrorHandler(
-                $error['errno'],
-                $error['errstr'],
-                $error['errfile'],
-                $error['errline'],
-                $error['errcontext']
+                $error['type'],
+                $error['message'],
+                $error['file'],
+                $error['line'],
+                []
             );
         }
         $this->fire('php.shutdown');
@@ -105,6 +122,22 @@ class Environment extends Component
     {
         return $this->_ENV;
     }
+
+    public function _POST( )
+    {
+        return $this->_POST;
+    }
+
+    public function _GET( )
+    {
+        return $this->_GET;
+    }
+
+    public function input ( )
+    {
+        return file_get_contents('php://input');
+    }
+
 
     public function get($name, $value = null)
     {
