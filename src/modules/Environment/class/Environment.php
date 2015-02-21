@@ -40,6 +40,10 @@ class Environment extends Component
         $this->_GET = Hash::create(
             Hash::NO_CASE_SENSITIVE, $_GET
         );
+
+        $this->_COOKIE = Hash::create(
+            Hash::NO_CASE_SENSITIVE, $_COOKIE
+        );
     }
 
     public function bootPHP( )
@@ -131,6 +135,11 @@ class Environment extends Component
     public function _GET( )
     {
         return $this->_GET;
+    }
+
+    public function _COOKIE( )
+    {
+        return $this->_COOKIE;
     }
 
     public function input ( )
