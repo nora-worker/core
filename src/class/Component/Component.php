@@ -28,11 +28,11 @@ class Component
 
     protected function initComponent( )
     {
-        $this->setComponent('scope', function ( ) {
+        $this->_scope->setComponent('scope', function ( ) {
             return $this->_scope;
         });
 
-        $this->setComponent('component', function ( ) {
+        $this->_scope->setComponent('component', function ( ) {
             return $this;
         });
 
@@ -41,7 +41,7 @@ class Component
         {
             if (0 === strpos($m,'boot'))
             {
-                $this->setComponent(
+                $this->_scope->setComponent(
                     substr($m,4),
                     function ( ) use ($m) {
                         return $this->{$m}( );
