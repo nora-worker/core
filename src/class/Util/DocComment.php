@@ -90,9 +90,12 @@ class DocComment
 
     public function gets($name) 
     {
-        foreach ($this->_attrs[$name] as $v) 
+        if (isset($this->_attrs[$name]))
         {
-            yield $v;
+            foreach ($this->_attrs[$name] as $v) 
+            {
+                yield $v;
+            }
         }
     }
 }

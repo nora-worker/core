@@ -12,6 +12,7 @@ namespace Nora\Module\Logging\Writer;
 use Nora\Core\Component\Component;
 use Nora\Core\Util\Collection\Hash;
 use Nora\Module\Logging\Log;
+use Nora\Module\Logging\LogLevel;
 use Nora\Module\Logging\Formatter;
 
 /**
@@ -31,6 +32,7 @@ abstract class Base
 
     protected function initWriter( )
     {
+        $this->_level = LogLevel::toInt($this->spec()->get('level', 'all'));
         $this->initWriterImpl();
     }
 
@@ -60,7 +62,10 @@ abstract class Base
 
     public function write(Log $log)
     {
-        $this->writeImpl($log);
+        if ($log->getLevel() <=  $this->_level)
+        {
+            $this->writeImpl($log);
+        }
     }
 
     abstract protected function writeImpl(Log $log);

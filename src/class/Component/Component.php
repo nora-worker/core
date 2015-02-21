@@ -139,4 +139,16 @@ class Component
 
         $this->rootScope()->fire('log.info',$options);
     }
+
+    /**
+     * 警告ログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function warn($msg, $options = [])
+    {
+        $options['msg'] = $msg;
+
+        $this->rootScope()->fire('log.warning',$options);
+    }
 }
