@@ -59,10 +59,17 @@ class File extends Base
             
         }, $file);
 
+
         $this->_file = vsprintf($file, [
             date('Y-m-d'),
             posix_getpwuid(posix_getuid())['name']
         ]);
+
+        if (!file_exists($this->_file))
+        {
+            touch($this->_file);
+            chmod($this->_file, 0666);
+        }
 
         $this->_mode = $this->spec()->get('mode', 'a');
     }
