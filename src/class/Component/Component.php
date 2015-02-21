@@ -127,4 +127,16 @@ class Component
 
         $this->rootScope()->fire('log.notice',$options);
     }
+
+    /**
+     * INFOログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function info($msg, $options = [])
+    {
+        $options['msg'] = $msg;
+
+        $this->rootScope()->fire('log.info',$options);
+    }
 }
