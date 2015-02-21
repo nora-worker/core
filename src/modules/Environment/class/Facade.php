@@ -35,7 +35,7 @@ class Facade extends Module
     /** 
      * コンフィグオブジェクトを作成する
      */
-    protected function bootConfig( )
+    protected function bootConfig($setting = [])
     {
         return  parent::bootConfig([
             'logger' => '_default'
