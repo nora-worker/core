@@ -113,7 +113,7 @@ class Component
     {
         $options['msg'] = $msg;
 
-        $this->rootScope()->fire('log.alert',$options);
+        $this->rootScope()->fire('log.alert',$options, $this);
     }
 
     /**
@@ -125,7 +125,7 @@ class Component
     {
         $options['msg'] = $msg;
 
-        $this->rootScope()->fire('log.notice',$options);
+        $this->rootScope()->fire('log.notice', $options, $this);
     }
 
     /**
@@ -137,7 +137,7 @@ class Component
     {
         $options['msg'] = $msg;
 
-        $this->rootScope()->fire('log.info',$options);
+        $this->rootScope()->fire('log.info',$options, $this);
     }
 
     /**
@@ -149,6 +149,6 @@ class Component
     {
         $options['msg'] = $msg;
 
-        $this->rootScope()->fire('log.warning',$options);
+        $this->rootScope()->fire('log.warning',$options, $this);
     }
 }

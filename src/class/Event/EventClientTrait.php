@@ -46,14 +46,20 @@ trait EventClientTrait
     /**
      * イベントをディスパッチする
      */
-    public function fire($tag, $params = [])
+    public function fire($tag, $params = [], $subject = null)
     {
         if (!($tag instanceof EventIF))
         {
+            if ($subject === null)
+            {
+                $subject = $this->_event_subject;
+            }
+
+
             $ev = Event::Create(
-                $this->filterEventTag($tag),
+                $this->filterEventTag($tag, $subject),
                 $params,
-                $this->_event_subject
+                $subject
             );
             return $this->dispatch($ev);
         }
@@ -67,12 +73,17 @@ trait EventClientTrait
         return $this->fire($tag, $params);
     }
 
-    protected function filterEventTag($tag)
+    protected function filterEventTag($tag, $subject)
     {
         return [
             $tag,
-            $this->_getDefaultTag()
+            $this->_classToTag(get_class($subject))
         ];
+    }
+
+    private function _classToTag($class)
+    {
+        return str_replace('\\', '.', $class);
     }
 
     private function _getDefaultTag( )
