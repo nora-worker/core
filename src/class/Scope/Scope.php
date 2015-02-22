@@ -181,4 +181,11 @@ class Scope implements ScopeIF
     {
         return $this->registry()->has($name);
     }
+
+    public function status ( )
+    {
+        return [
+            'helpers' => $this->_helper_container->getKeys()
+        ];
+    }
 }

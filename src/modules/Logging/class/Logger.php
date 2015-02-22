@@ -48,7 +48,32 @@ class Logger
     {
         // ロガーを適用
         $client->observe(function($e) {
-            if (
+
+            if ($e->match('php.error'))
+            {
+                $this->post(
+                    Log::create(
+                        $e->errstr,
+                        [
+                            'file' => $e->errfile,
+                            'line' => $e->errline,
+                        ],
+                        LogLevel::phpToNora($e->errno),
+                        'php.error'
+                    )
+                );
+            }elseif($e->match('php.exception')) {
+                $this->post(
+                    Log::create(
+                        (string) $e->exception,
+                        [
+                            'class' => get_class($e->exception),
+                        ],
+                        LogLevel::CRIT,
+                        'php.exception'
+                    )
+                );
+            }elseif (
                 $e->match(function($tag) {
                     return 0 === strpos($tag, 'log');
                 }, $hit)

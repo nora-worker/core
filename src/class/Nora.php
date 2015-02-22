@@ -34,6 +34,11 @@ class Nora
      */
     static private $_app;
 
+    /**
+     * アプリクラス
+     */
+    static private $_app_class = 'Nora\Core\App\App';
+
 
     /**
      * オートローダの取得
@@ -68,6 +73,7 @@ class Nora
      */
     static public function initialize ($path, $env, $cb = null)
     {
+        // 新スコープを作成
         $scope =  Scope::create(null, 'NoraScope')
             ->setComponent('Autoloader', function ( ) {
                 return Nora::Autoloader();
@@ -90,18 +96,12 @@ class Nora
             # App設定後に実行される
             ->on('app.post_configure', function ($e) use ($cb) {
 
-                // TODO まとめる
-
                 $app = $e->app;
 
-                # PHPの設定
-                mb_language($app->config( )->get('php.mb_language', 'ja'));
+                # PHP系のセットアップ
+                $app->setupPHP();
 
-                mb_internal_encoding(
-                    $app->config( )->get('php.mb_internal_encoding', 'utf8')
-                );
-
-                # チェック
+                # アプリケーションのチェック
                 $app->check();
 
                 # 開発ツールのロード
@@ -109,15 +109,11 @@ class Nora
                     !$app->isDevel()
                 );
 
-                // のらの初期化イベントを発行する
-                self::fire('nora.init', [
-                    'nora' => $app
-                ]);
-
                 if ($cb !== null) self::invoke($cb);
             });
 
-        self::$_app = new App($scope);
+        $class = self::$_app_class;
+        self::$_app = new $class($scope);
         self::configure($path, $env);
         return self::$_app;
     }

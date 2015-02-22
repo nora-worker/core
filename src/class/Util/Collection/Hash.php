@@ -147,6 +147,11 @@ class Hash implements \ArrayAccess
         return $ret;
     }
 
+    public function getKeys( )
+    {
+        return array_keys($this->_array);
+    }
+
     public function offsetExists($name)
     {
         return $this->has($name);

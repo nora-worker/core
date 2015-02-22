@@ -76,7 +76,7 @@ class Environment extends Component
      */
     public function phpErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        $this->fire('php.error', [
+        $this->rootScope()->fire('php.error', [
             'errno'      => $errno,
             'errstr'     => $errstr,
             'errfile'    => $errfile,
@@ -89,7 +89,7 @@ class Environment extends Component
      */
     public function phpExceptionHandler($exception)
     {
-        $this->fire('php.exception', [
+        $this->rootScope()->fire('php.exception', [
             'exception' => $exception
         ]);
     }
