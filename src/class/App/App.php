@@ -94,14 +94,13 @@ class App extends Component
         ];
     }
 
-
-    public function configure($path, $env)
+    public function configure($path = null, $env = null)
     {
         // ルートパスを設定
-        $this->root_path = $path;
+        $this->root_path = $path === null ? __DIR__: $path;
 
         // 環境名を設定
-        $this->env = $env;
+        $this->env = $env === null ? 'prod': $env;
 
         $this->fire('app.pre_configure', [
             'app' => $this

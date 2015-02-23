@@ -118,6 +118,50 @@ class Nora
         return self::$_app;
     }
 
+    /**
+     * スタンドアローン版
+     */
+    static public function standalone ( )
+    {
+        $scope =  Scope::create(null, 'NoraScope')
+            ->setComponent('Autoloader', function ( ) {
+                return Nora::Autoloader();
+            })
+            # App設定前に実行される
+            ->on('app.pre_configure', function ($e) {
+
+                # モジュールロードパスを追加
+                $e
+                    ->app
+                    ->ModuleLoader( )
+                    ->addModulePath(realpath(__DIR__.'/../modules'));
+
+                # コンフィグロードパスを追加
+                $e
+                    ->app
+                    ->Config( )
+                    ->addConfigDir(realpath(__DIR__.'/../..').'/config');
+            })
+            # App設定後に実行される
+            ->on('app.post_configure', function ($e) {
+
+                $app = $e->app;
+
+                # 開発ツールのロード
+                self::ModuleLoader( )->load('devel')->enable(
+                    !$app->isDevel()
+                );
+
+                // のらの初期化イベントを発行する
+                self::fire('nora.init', [
+                    'nora' => $app
+                ]);
+            });
+
+        self::$_app = new App($scope);
+        self::configure( );
+        return self::$_app;
+    }
 
     /**
      * @param string $name 呼びだされたメソッド名
@@ -127,7 +171,9 @@ class Nora
     static public function __callStatic ($name, $args)
     {
         if (!self::$_app) {
-            throw new \Exception('Nora: Not Initialized');
+            // スタンドアローン版をビルドする
+            self::standalone();
+            //throw new \Exception('Nora: Not Initialized');
         }
         return call_user_func_array(
             [self::$_app, $name],
