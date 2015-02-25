@@ -29,9 +29,8 @@ abstract class Module extends Component implements ModuleIF
         }];
     }
 
-    protected function initComponent( )
+    protected function initComponentImpl( )
     {
-        parent::initComponent( );
         $this->initModule();
     }
 

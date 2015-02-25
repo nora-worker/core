@@ -96,8 +96,6 @@ class Scope implements ScopeIF
 
         $prev_name = $name;
 
-        if ($cnt > 20) throw new \RuntimeException("ループしています ".get_class($this)."::".$name);
-
 
         if ($this->hasHelper($name))
         {
