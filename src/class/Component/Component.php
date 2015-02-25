@@ -151,4 +151,18 @@ class Component
 
         $this->rootScope()->fire('log.warning',$options, $this);
     }
+
+    /**
+     * エラーログイベントを発生させる
+     *
+     * @param string $msg
+     */
+    public function error($msg, $options = [])
+    {
+        $options['msg'] = $msg;
+
+        $this->rootScope()->fire('log.error',$options, $this);
+
+        throw new \Exception('Error: '.$msg.' From: '.get_class($this));
+    }
 }

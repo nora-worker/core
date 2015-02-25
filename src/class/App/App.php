@@ -106,8 +106,6 @@ class App extends Component
             'app' => $this
         ]);
 
-
-
         // 設定ファイル置場を指定した後に
         // default $envをロードする
         $this->Config( )->addConfigDir(
@@ -116,7 +114,6 @@ class App extends Component
 
         // 環境をセットアップ
         $this->module('environment');
-        $this->environment()->register();
 
         // オートロード処理
         $this->AutoLoader()->addLibrary(
