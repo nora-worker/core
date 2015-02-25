@@ -23,6 +23,7 @@ class ModuleLoader extends Component {
     private $_module_path_list = [];
     private $_module_ns_list = [];
     private $_load_log = [];
+    private $_config = [];
 
     protected function initcomponentImpl( )
     {
@@ -31,6 +32,35 @@ class ModuleLoader extends Component {
                 [$this, 'load'], func_get_args()
             );
         });
+    }
+
+    /**
+     * モジュールコンフィグ
+     */
+    public function setConfig($name, $datas = null)
+    {
+        if (is_array($name))
+        {
+            foreach($name as $k=>$v) {
+                $this->setConfig($k, $v);
+            }
+            return $this;
+        }
+
+        $this->_config[$name] = $datas;
+        return $this;
+    }
+
+    /**
+     * モジュールコンフィグ
+     */
+    public function getConfig($name)
+    {
+        if (isset($this->_config[$name]))
+        {
+            return $this->_config[$name];
+        }
+        return [];
     }
 
     /**
@@ -107,14 +137,39 @@ class ModuleLoader extends Component {
         {
             $this->setComponent('___'.$name, function ( ) use ($name){
                 $module = $this->invoke($this->getModuleFactory($name));
-                return $this->fire('moduleloader.loadmodule', [
+                $e = $this->fire('moduleloader.loadmodule', [
                     'module' => $module,
+                    'config' => $this->getConfig($name),
                     'name' => strtolower($name)
-                ])->module;
+                ]);
+                if (!empty($e->config)) {
+                    $e->module->configure($e->config);
+                }
+                return $e->module;
             });
         }
 
         return $this->getComponent('___'.$name);
+    }
+    /**
+     * モジュールがあるか
+     */
+    public function hasModule($name)
+    {
+        if ($this->hasComponent('___'.$name))
+        {
+            return true;
+        }
+
+        // ネームスペースから読み込みをトライ
+        foreach($this->_module_ns_list as $ns)
+        {
+            if (class_exists($class = $ns.'\\'.$name.'\\'.self::FACADE_CLASS))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function load($name)

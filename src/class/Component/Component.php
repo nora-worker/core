@@ -11,6 +11,7 @@ namespace Nora\Core\Component;
 
 use Nora\Core\Util\Collection\Hash;
 use Nora\Core\Scope\Scope;
+use Nora\Core\Scope\Exception;
 
 /**
  * コンポーネント
@@ -69,7 +70,13 @@ class Component
     {
         if ($this->scope() === null) return false;
 
-        $res = call_user_func_array([$this->scope(), $name], $args);
+        try {
+            $res = call_user_func_array([$this->scope(), $name], $args);
+        }catch (\Exception $e) {
+            throw $e;
+            throw new Exception\InvalidMethodCalled($name, $this);
+        }
+
 
         if ($res === $this->scope())
         {

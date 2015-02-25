@@ -88,15 +88,6 @@ class Scope implements ScopeIF
      */
     public function __call ($name, $args)
     {
-        static $prev_name;
-        static $cnt;
-
-        if ($prev_name === $name) $cnt++;
-        else $cnt = 0;
-
-        $prev_name = $name;
-
-
         if ($this->hasHelper($name))
         {
             return $this->invokeHelperArray($name, $args);
@@ -105,6 +96,27 @@ class Scope implements ScopeIF
         if ($this->hasComponent($name))
         {
             return $this->getComponent($name, isset($args[0]) ? $args[0]: null);
+        }
+
+        if ($this->hasComponent('ModuleLoader'))
+        {
+            if ($this->ModuleLoader( )->hasModule($name))
+            {
+                return $this->ModuleLoader()->loadModule($name);
+            }
+
+            if ($p = strpos($name,'_'))
+            {
+                $module = substr($name,0,$p);
+                $method = substr($name,$p+1);
+                if($this->ModuleLoader( )->hasModule($module))
+                {
+                    return call_user_func_array(
+                        [$this->ModuleLoader()->load($module), $method],
+                        $args
+                    );
+                }
+            }
         }
 
         throw new Exception\InvalidMethodCalled($name, $this);

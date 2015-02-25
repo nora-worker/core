@@ -82,7 +82,7 @@ class App extends Component
      */
     protected function bootConfig( )
     {
-        return new Config($this->scope());
+        return new Config($this->newScope());
     }
 
     public function status ( )
@@ -166,5 +166,6 @@ class App extends Component
     {
         // TODO モジュールの設定値
     }
+
 }
 

@@ -98,11 +98,13 @@ trait ScopeComponentsTrait
      */
     public function hasComponent($name)
     {
+        /**
         if (strpos($name, '_'))
         {
             list($parent, $name) = explode('_', $name, 2);
             return $this->getComponent($parent)->hasComponent($name);
         }
+        **/
 
         // コンポーネントの取得要求を出す
         return $event = $this->dispatch('scope.component.has', [
