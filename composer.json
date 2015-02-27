@@ -1,5 +1,5 @@
 {
-    "name"        : "NoraWorker/Core",
+    "name"        : "nora-worker/core",
     "version"     : "1.0.0",
     "description" : "ノラワーカー's ライブラリ",
     "homepage"    : "http://www.nora-worker.net/",
