@@ -7,3 +7,13 @@
  * @licence https://www.nora-worker.net/LICENCE
  * @version 1.0.0
  */
+
+namespace Nora\Core\Module;
+
+
+/**
+ * モジュールクラス
+ */
+interface ModuleIF
+{
+}

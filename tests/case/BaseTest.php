@@ -2,9 +2,9 @@
 /**
  * Nora Project
  *
- * @author Hajime MATSUMOTO <hajime@nora-worker.org>
+ * @author Hajime MATSUMOTO <hajime@nora-worker.net>
  * @copyright 2015 nora-worker.net.
- * @licence https://www.nora-worker.org/LICENCE
+ * @licence https://www.nora-worker.net/LICENCE
  * @version 1.0.0
  */
 
@@ -26,5 +26,15 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'Nora\Core\Autoloader',
             Nora::Autoloader()
         );
+    }
+
+    /**
+     * Initialize
+     *
+     * @covers ::initialize
+     */
+    public function testInitialize ( )
+    {
+        Nora::initialize(TEST_PROJECT_PATH, 'devel');
     }
 }

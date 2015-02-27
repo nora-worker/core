@@ -1,0 +1,33 @@
+{
+    "name"        : "NoraWorker/Core",
+    "version"     : "1.0.0",
+    "description" : "ノラワーカー's ライブラリ",
+    "homepage"    : "http://www.nora-worker.net/",
+    "type"        : "library",
+    "license"     : [
+        "MIT"
+    ],
+    "authors" : [
+        {
+            "name"     : "Hajime MATSUMOTO",
+            "email"    : "hajime@nora-worker.net",
+            "homepage" : "http://hazime.org",
+            "role"     : "Developer"
+        }
+    ],
+    "support" : {
+        "email" : "support@nora-worker.net"
+    },
+    "require" : {
+        "ext-yaml" : "*",
+        "ext-twig" : "*"
+    },
+    "require" : {
+    },
+    "autoload": {
+        "files" : [
+            "src/scripts/autoload.php"
+        ]
+    }
+}
+

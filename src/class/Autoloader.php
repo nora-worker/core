@@ -2,13 +2,9 @@
 /**
  * Nora Project
  *
- * クラス定義ファイル
- *
- * PHP versions 5.3
- *
- * @author Hajime MATSUMOTO <hajime@nora-worker.org>
- * @copyright Since 2015 nora-worker.net.
- * @licence https://www.nora-worker.org/LICENCE
+ * @author Hajime MATSUMOTO <hajime@nora-worker.net>
+ * @copyright 2015 nora-worker.net.
+ * @licence https://www.nora-worker.net/LICENCE
  * @version 1.0.0
  */
 
@@ -55,7 +51,7 @@ class AutoLoader
      * @param string|array $path
      * @param string $ns optional Namespace
      */
-    private function addLibrary( $path, $ns = null )
+    public function addLibrary( $path, $ns = null )
     {
         if (is_array($path))
         {
@@ -74,6 +70,8 @@ class AutoLoader
 
         $path = rtrim($path, '/');
         $this->_library[] = !is_string($ns) ? $path: ['ns' => trim($ns,'\\'), 'path' => rtrim($path,'//')];
+
+        return $this;
     }
 
     /**
